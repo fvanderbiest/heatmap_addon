@@ -1,0 +1,34 @@
+{
+    "js": [
+        "js/WPS_Utils.js",
+        "js/main.js"
+    ],
+    "css": [
+        "css/heatmap.css"
+    ],
+    "default_options": {},
+    "i18n": {
+        "en": {
+            "heatmap.workspace": "Workspace",
+               "heatmap.layername": "Layer name",
+               "heatmap.weightAttr":"Weight attribute",
+               "heatmap.warning.message": "You should fill the layer name and workspace fields",
+               "heatmap.submit": "Validate"
+
+
+        },
+        "es": {
+        },
+        "fr": {
+              "heatmap.workspace": "Espace de travail",
+               "heatmap.layername": "Nom de la couche",
+               "heatmap.weightAttr": "Attribut",
+               "heatmap.submit": "Valider",
+               "heatmap.warning.message": "Vous devez remplir Les champs couche et espace de travail."
+
+        },
+        "de": {
+        }
+    }
+}
+
