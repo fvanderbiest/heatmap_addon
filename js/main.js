@@ -2,36 +2,36 @@ Ext.namespace("GEOR.Addons");
 
 GEOR.Addons.Heatmap = Ext.extend(GEOR.Addons.Base, {
 
-	win : null,
+	win: null,
 	// the list of available layers
-	layerStore : null,
+	layerStore: null,
 	// the selected layer name
-	layerName_HM : null,
+	layerName_HM: null,
 
 	/** Initialize the addon */
-	init : function(record) {
+	init: function(record) {
 		var lang = OpenLayers.Lang.getCode();
 		mapProjection = this.map.getProjection();
 		if (this.target) {
 			this.components = this.target.insertButton(this.position, {
-				xtype : 'button',
-				enableToggle : true,
-				tooltip : this.getTooltip(record),
-				iconCls : 'addon-heatmap',
-				listeners : {
-					"toggle" : this.showWindow,
-					scope : this
+				xtype: 'button',
+				enableToggle: true,
+				tooltip: this.getTooltip(record),
+				iconCls: 'addon-heatmap',
+				listeners: {
+					"toggle": this.showWindow,
+					scope: this
 				}
 			});
 			this.target.doLayout();
 		} else {
 			this.item = new Ext.menu.Item({
-				id : 'addon-heatmap',
-				text : this.getText(record),
-				qtip : this.getQtip(record),
-				listeners : {
-					'click' : this.showWindow,
-					scope : this
+				id: 'addon-heatmap',
+				text: this.getText(record),
+				qtip: this.getQtip(record),
+				listeners: {
+					'click': this.showWindow,
+					scope: this
 				}
 			});
 		}
@@ -40,7 +40,7 @@ GEOR.Addons.Heatmap = Ext.extend(GEOR.Addons.Base, {
 
 
 	/** window to fill the layers characteristics */
-	showWindow : function() {
+	showWindow: function() {
 
 		if (!this.win) {
 
@@ -67,27 +67,27 @@ GEOR.Addons.Heatmap = Ext.extend(GEOR.Addons.Base, {
 			});
 
 			this.win = new Ext.Window({
-				title : "Configuration",
-				height : 150,
-				width : 350,
-				bodyStyle : 'padding: 5px',
-				layout : 'form',
-				labelWidth : 110,
-				resizable : true,
-				defaultType : 'field',
-				items : [ this.combo_Server_HM, this.combo_Layers_HM, {
-					fieldLabel : OpenLayers.i18n("heatmap.weightAttr"),
-					width : 200,
-					id : 'weightAttr_HM',
-					allowBlank : false
+				title: "Configuration",
+				height: 150,
+				width: 350,
+				bodyStyle: 'padding: 5px',
+				layout: 'form',
+				labelWidth: 110,
+				resizable: true,
+				defaultType: 'field',
+				items: [ this.combo_Server_HM, this.combo_Layers_HM, {
+					fieldLabel: OpenLayers.i18n("heatmap.weightAttr"),
+					width: 200,
+					id: 'weightAttr_HM',
+					allowBlank: false
 				} ],
-				fbar : [
+				fbar: [
 						'->',
 						{
-							text : OpenLayers.i18n("heatmap.submit"),
-							id : 'submit_HM',
-							formBind : true,
-							handler : function() {
+							text: OpenLayers.i18n("heatmap.submit"),
+							id: 'submit_HM',
+							formBind: true,
+							handler: function() {
 								// get inserted value for the first layer
 								weightAttr_HM = Ext.getCmp('weightAttr_HM')
 										.getValue();
@@ -102,16 +102,16 @@ GEOR.Addons.Heatmap = Ext.extend(GEOR.Addons.Base, {
 								this.executeWMS();
 							},
 
-							scope : this
+							scope: this
 						} ],
-				listeners : {
-					"hide" : function() {
+				listeners: {
+					"hide": function() {
 						// this.map.removeLayer(this.layer);
 						// this.item && this.item.setChecked(false);
 						// this.components && this.components.toggle(false);
 						// alert("we are here");
 					},
-					scope : this
+					scope: this
 				}
 			});
 
@@ -122,24 +122,24 @@ GEOR.Addons.Heatmap = Ext.extend(GEOR.Addons.Base, {
 	},
 
 	/** Execute the WMS request to get the layer with HeatMAP sld */
-	executeWMS : function() {
-
-		newWmsLayer = new OpenLayers.Layer.WMS("Heatmap",
+	executeWMS: function() {
+		this.map.addLayer(
+            new OpenLayers.Layer.WMS("Heatmap",
 				GEOR.config.GEOSERVER_WMS_URL, {
-					layers : layerName_HM,
-					transparent : 'true',
-					styles : 'Heatmap',
-					env : 'weightAttr:' + weightAttr_HM
+					layers: layerName_HM,
+					transparent: 'true',
+					styles: 'Heatmap',
+					env: 'weightAttr:' + weightAttr_HM
 				}, {
-					isBaseLayer : true,
-					format : 'image/png',
-					singleTile : true
-				});
-		this.map.addLayers([ newWmsLayer ]);
-
+					isBaseLayer: true,
+					format: 'image/png',
+					singleTile: true
+				}
+            )
+        );
 	},
 
-	destroy : function() {
+	destroy: function() {
 		GEOR.Addons.Base.prototype.destroy.call(this);
 	}
 });
